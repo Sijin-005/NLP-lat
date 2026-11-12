@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+/*
+ * NLPulse global styles.
+ *
+ * Everything here is local. No fonts, stylesheets or scripts are fetched from
+ * a CDN at runtime, so the whole application works with the network cable out.
+ */
+
+@theme {
+  /* Surfaces, from deepest background to raised panel. */
+  --color-abyss: #05070d;
+  --color-void: #090d17;
+  --color-panel: #0e1322;
+  --color-panel-2: #141a2c;
+  --color-edge: #1e2740;
+  --color-edge-bright: #2c3a5e;
+  /* Text. */
+  --color-ink: #e8edf7;
+  --color-ink-dim: #9aa8c4;
+  --color-ink-faint: #64748b;
+
+  /* Accents used consistently across pipeline, charts and waterfall. */
+  --color-pulse: #38bdf8;
+  --color-pulse-deep: #0ea5e9;
+  --color-spark: #facc15;
+  --color-grow: #22c55e;
+  --color-warn: #f59e0b;
+  --color-hot: #ef4444;
+  --color-mind: #ec4899;
+  --color-think: #a78bfa;
+
+  --font-sans: 'Inter var', 'Segoe UI Variable Display', 'Segoe UI', system-ui,
+    -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas,
+    'SF Mono', ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-abyss);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* A calm, dark scrollbar that does not fight the theme on a projector. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #253052 transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #253052;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #33406b;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Visible focus for keyboard users, without a permanent outline on click. */
+:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  /* The standard raised panel used throughout the dashboard. */
+  .panel {
+    background: linear-gradient(180deg, #111728 0%, #0c1120 100%);
+    border: 1px solid #1e2740;
+    border-radius: 14px;
+  }
+
+  .panel-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7c8db3;
+  }
+
+  /* Numeric readouts: tabular figures stop the layout twitching as they tick. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Soft coloured glow behind an active pipeline node. */
+  .glow-ring {
+    box-shadow:
+      0 0 0 1px rgb(56 189 248 / 0.5),
+      0 0 24px 2px rgb(56 189 248 / 0.28);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Respect a reduced-motion preference: keep the teaching, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Token arrival: a short lift-and-fade as each generated token lands. */
+@keyframes tokenIn {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Slow drift used behind the model-inference visual. */
+@keyframes driftPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.04);
+  }
+}
+
+/* Traffic used by the latency-vs-throughput road analogy. */
+@keyframes driveAcross {
+  from {
+    left: -8%;
+  }
+  to {
+    left: 102%;
+  }
+}
